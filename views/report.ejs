@@ -1,0 +1,81 @@
+<%- layout('layout') %>
+
+<section role="main" class="content-body" style="margin-left: 0;">
+    <div class="tabs">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#top-malware" data-toggle="tab">Malwares</a>
+            </li>
+            <li class="">
+                <a href="#top-region" data-toggle="tab">Regions</a>
+            </li>
+            <li class="">
+                <a href="#top-remote" data-toggle="tab">Remote Sites</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="top-malware" class="tab-pane active">
+                <table id="table-malware" class="table table-bordered table-striped" id="table-top-malware">
+                    <thead>
+                    <tr>
+                        <th class="text-center" width="5%">#</th>
+                        <th width="85%">Malware Name</th>
+                        <th class="text-center" width="10%">Detected Times</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% malwares.forEach(function(data, index) { %>
+                    <tr>
+                        <td class="col-index"><%= index + 1 %></td>
+                        <td><%= data.name %></td>
+                        <td class="text-center"><%= data.count %></td>
+                    </tr>
+                    <% }) %>
+                    </tbody>
+                </table>
+            </div>
+            <div id="top-region" class="tab-pane">
+                <table id="table-region" class="table table-bordered table-striped" id="table-top-region">
+                    <thead>
+                    <tr>
+                        <th class="text-center" width="5%">#</th>
+                        <th width="40%">Country Name</th>
+                        <th width="45%">Region Name</th>
+                        <th class="text-center" width="10%">Detected Times</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% regions.forEach(function(data, index) { %>
+                    <tr>
+                        <td class="col-index"><%= index + 1 %></td>
+                        <td><%= data.countryName %></td>
+                        <td><%= data.regionName ? data.regionName : "-" %></td>
+                        <td class="text-center"><%= data.count %></td>
+                    </tr>
+                    <% }) %>
+                    </tbody>
+                </table>
+            </div>
+            <div id="top-remote" class="tab-pane">
+                <table id="table-remote" class="table table-bordered table-striped" id="table-top-remote">
+                    <thead>
+                    <tr>
+                        <th class="text-center" width="5%">#</th>
+                        <th width="85%">Remote Site</th>
+                        <th class="text-center" width="10%">Detected Times</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% remotes.forEach(function(data, index) { %>
+                    <tr>
+                        <td class="col-index"><%= index + 1 %></td>
+                        <td><%= data.remoteHost %></td>
+                        <td class="text-center"><%= data.count %></td>
+                    </tr>
+                    <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>

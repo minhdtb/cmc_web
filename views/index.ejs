@@ -1,0 +1,138 @@
+<%- layout('layout') %>
+
+<div id="popup" class="row popup">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table mb-none table-bordered" style="width: 200px">
+                <tbody id="content">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<section role="main" class="content-body" style="margin-left: 0;">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <div class="panel-actions">
+                            </div>
+
+                            <h2 class="panel-title">Malwares</h2>
+                        </header>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table mb-none table-bordered table-striped">
+                                    <tbody>
+                                    <% topMalware.forEach(function(data, index) { %>
+                                    <tr>
+                                        <td class="col-index"><%= index + 1 %></td>
+                                        <td><%= data.name %></td>
+                                        <td class="col-badge">
+                                                    <span class="badge label-danger malware"
+                                                          data-name="<%= data.name %>"><%= data.count %></span>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <div class="panel-actions">
+                            </div>
+                            <h2 class="panel-title">Remote Sites</h2>
+                        </header>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table mb-none table-bordered table-striped">
+                                    <tbody>
+                                    <% topRemote.forEach(function(data, index) { %>
+                                    <tr>
+                                        <td class="col-index"><%= index + 1 %></td>
+                                        <td><%= data.remoteHost %></td>
+                                        <td class="col-badge">
+                                                    <span class="badge label-danger remote"
+                                                          data-host="<%= data.remoteHost %>"><%= data.count %></span>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-md-8">
+                    <%- include world.ejs %>
+                    <section class="panel" id="console">
+                        <header class="panel-heading">
+                            <div class="panel-actions">
+                                <a href="#" class="panel-action panel-action-toggle" data-panel-toggle=""></a>
+                                <a href="#" class="panel-action panel-action-dismiss" data-panel-dismiss=""></a>
+                            </div>
+                            <h2 class="panel-title">Console</h2>
+                        </header>
+                        <div class="panel-body">
+                            <div id="terminal"></div>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-md-4">
+                    <%- include vietnam.ejs %>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="row">
+                <div class="col-md-12">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <div class="panel-actions">
+                            </div>
+
+                            <h2 class="panel-title">Regions</h2>
+                        </header>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table mb-none table-bordered table-striped"
+                                       style="overflow: hidden">
+                                    <tbody>
+                                    <% topRegion.forEach(function(data, index) { %>
+                                    <tr>
+                                        <td class="col-index"><%= index + 1 %></td>
+                                        <td class="col-flag"><span
+                                                    class="flag-icon <%= 'flag-icon-' + data.countryCode %>">
+
+                                                    </span>
+                                        </td>
+                                        <td><%= data.regionName ? data.regionName : "-" %></td>
+                                        <td class="col-badge"><span class="badge label-danger region"
+                                                                    data-country-code="<%= data.countryCode %>"
+                                                                    data-region-code="<%= data.regionCode %>"> <%= data.count %></span>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
