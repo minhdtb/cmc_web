@@ -85,68 +85,66 @@ $(document).ready(() => {
     client.subscribe('blacklist');
 
     client.on('message', (topic, message) => {
+
         let data = JSON.parse(message.toString());
+        if (topic === 'message') {
+            let objectCountry = d3.select('#map-world')
+                .select('#' + data.countryCode.toUpperCase());
 
-        let objectCountry = d3.select('#map-world')
-            .select('#' + data.countryCode.toUpperCase());
+            let objectRemoteCountry = d3.select('#map-world')
+                .select('#' + data.remoteCountryCode.toUpperCase());
 
-        let objectRemoteCountry = d3.select('#map-world')
-            .select('#' + data.remoteCountryCode.toUpperCase());
+            if (objectCountry && objectRemoteCountry) {
+                let countryPoint = getCenterPoint(objectCountry.node());
+                let remotePoint = getCenterPoint(objectRemoteCountry.node());
+                if (remotePoint.x === 0 && remotePoint.y === 0)
+                    remotePoint = countryPoint;
 
-        if (objectCountry && objectRemoteCountry) {
-            let countryPoint = getCenterPoint(objectCountry.node());
-            let remotePoint = getCenterPoint(objectRemoteCountry.node());
-            if (remotePoint.x === 0 && remotePoint.y === 0)
-                remotePoint = countryPoint;
-
-            drawLine(countryPoint, remotePoint);
-        }
-
-        let objectVietNamRegion = null;
-
-        if (data.countryCode === 'vn') {
-            objectVietNamRegion = d3.select('#map-viet-nam')
-                .select('#VN-' + data.regionCode);
-        }
-
-        let index = 0;
-
-        function rotateColors() {
-            let currentColor = colors[index];
-            let color = "rgb(" + currentColor.R + "," + currentColor.G + "," + currentColor.B + ")";
-
-            if (objectCountry) {
-                objectCountry.style('fill', color);
+                drawLine(countryPoint, remotePoint);
             }
 
-            if (objectRemoteCountry) {
-                objectRemoteCountry.style('fill', color);
+            let objectVietNamRegion = null;
+
+            if (data.countryCode === 'vn') {
+                objectVietNamRegion = d3.select('#map-viet-nam')
+                    .select('#VN-' + data.regionCode);
             }
 
-            if (objectVietNamRegion) {
-                objectVietNamRegion.style('fill', color);
+            let index = 0;
+
+            function rotateColors() {
+                let currentColor = colors[index];
+                let color = "rgb(" + currentColor.R + "," + currentColor.G + "," + currentColor.B + ")";
+
+                if (objectCountry) {
+                    objectCountry.style('fill', color);
+                }
+
+                if (objectRemoteCountry) {
+                    objectRemoteCountry.style('fill', color);
+                }
+
+                if (objectVietNamRegion) {
+                    objectVietNamRegion.style('fill', color);
+                }
+
+                index++;
+                if (index < colors.length)
+                    setTimeout(rotateColors, 10);
             }
 
-            index++;
-            if (index < colors.length)
-                setTimeout(rotateColors, 10);
-        }
+            rotateColors();
 
-        rotateColors();
-
-        if (terminal) {
-            terminal.echo(PROMPT + `[[b;gray;]${moment(new Date()).format('DD/MM/YYYY HH:mm:ss')}] - [[b;green;]Malware Detected] - Name: [[b;red;]` + data.name + ']');
+            if (terminal) {
+                terminal.echo(PROMPT + `[[b;gray;]${moment(new Date()).format('DD/MM/YYYY HH:mm:ss')}] - [[b;green;]Malware Detected] - Name: [[b;red;]` + data.name + ']');
+            }
+        } else if (topic === 'blacklist') {
+            if (terminal) {
+                terminal.echo(PROMPT + `[[b;gray;]${moment(new Date()).format('DD/MM/YYYY HH:mm:ss')}] - [[b;blue;]Black Host Detected] - Remote Host: [[b;red;]` + data.remoteHost + ']');
+            }
         }
     });
-
-    client.on('blacklist', (topic, message) => {
-        let data = JSON.parse(message.toString());
-
-        if (terminal) {
-            terminal.echo(PROMPT + `[[b;gray;]${moment(new Date()).format('DD/MM/YYYY HH:mm:ss')}] - [[b;blue;]Black Host Detected] - Remote Host: [[b;red;]` + data.remoteHost + ']');
-        }
-    });
-
+    
     $('#console').draggable();
 
     d3.selectAll('path')
